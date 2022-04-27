@@ -8,6 +8,11 @@
     "dev": "cross-env NODE_ENV=development webpack serve --mode development",
     "start": "cross-env NODE_ENV=development webpack serve --mode development"
   },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "IE 10"
+  ],
   "author": "gr1mmz",
   "license": "ISC",
   "devDependencies": {
@@ -22,6 +27,8 @@
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.2",
     "mini-css-extract-plugin": "^2.4.2",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.4",
     "sass": "^1.42.1",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.3.0",
