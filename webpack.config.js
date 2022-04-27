@@ -29,6 +29,7 @@ module.exports = {
     path: path.resolve(__dirname, paths.build),
     filename: `./js/${filename('js')}`,
     publicPath: '',
+    assetModuleFilename: 'assets/[hash][ext][query]',
     clean: true,
   },
   devServer: {
@@ -39,7 +40,7 @@ module.exports = {
     hot: true,
     port: 3000,
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   optimization: {
     splitChunks: {chunks: 'all'},
     minimize: isProd,
@@ -54,11 +55,6 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: `./img`, to: `img`,
-          noErrorOnMissing: false,
-          force: true
-        },
-        {
           from: `./assets`, to: `./`,
           noErrorOnMissing: true,
           force: true
@@ -69,7 +65,7 @@ module.exports = {
         }
       ],
     }),
-    new MiniCssExtractPlugin({filename: `./css/${filename('css')}`})
+    new MiniCssExtractPlugin({filename: `./css/[name].[contenthash].css`})
   ],
   module: {
     rules: [
@@ -85,40 +81,18 @@ module.exports = {
         },
       },
       {
-        test: /\.(scss|css)$/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
+            loader: (mode === 'development') ? "style-loader" : MiniCssExtractPlugin.loader,
+            options: (mode === 'development') ? {} : {
               publicPath: (resourcePath, context) => {
                 return path.relative(path.dirname(resourcePath), context) + "/";
               },
-            },
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 0,
-              sourceMap: false,
-              modules: false,
-              url: {
-                filter: (url, resourcePath) => {
-                  if (url.includes("img") || url.includes("fonts")) {
-                    return false;
-                  }
-                  return true;
-                },
-              },
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sassOptions: {
-                outputStyle: "expanded",
-              },
             }
           },
+          "css-loader",
+          "sass-loader",
         ],
       },
       {
@@ -126,6 +100,24 @@ module.exports = {
         exclude: /node_modules/,
         use: ['babel-loader'],
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource'
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
     ],
   },
 }

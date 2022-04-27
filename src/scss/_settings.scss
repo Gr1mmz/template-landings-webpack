@@ -1,5 +1,6 @@
 html {
   box-sizing: border-box;
+  font-family: generalFont;
 }
 
 *,
@@ -9,8 +10,6 @@ html {
 }
 
 body {
-  overflow-anchor: none;
-  font-family: "asd", sans-serif;
   background-color: var(--color-white);
   scroll-behavior: smooth;
 }
@@ -22,10 +21,6 @@ img {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.site-container {
-  overflow: hidden;
 }
 
 .is-hidden {
@@ -51,7 +46,6 @@ a {
 
 .container {
   margin: 0 auto;
-  padding: 0 15px;
   max-width: 1200px;
 }
 
